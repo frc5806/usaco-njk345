@@ -7,20 +7,28 @@ public class FencePainting {
 		Scanner s = new Scanner(System.in);
 		System.out.print("Enter Name of File: ");
 		String fName = s.nextLine();
+		int solution = totalLenPainted(readInputFile(fName));
+		System.out.println("Solution: " + solution);
 		writeOutputFile(totalLenPainted(readInputFile(fName)));
-		System.out.println("All Done.");
+		System.out.println("Solution Written to File — All Done");
 	}
 	public static int totalLenPainted(ArrayList<Integer> nums) {
 		//first two ints are the farmer's bounds
 		//second two ints are the cow's bounds
-		HashSet<Integer> allLinksNoRepeats = new HashSet<>();
-		for (int i = nums.get(0); i <= nums.get(1); i++) {
-			allLinksNoRepeats.add(nums.get(0) + i);
+		int a = nums.get(0), b = nums.get(1), c = nums.get(2), d = nums.get(3);
+		if (c >= a && c <= b && d >= a && d <= b) {
+			System.out.println("both cow bounds within farmer bounds");
+			return b - a;
+		} else if (c >= a && c <= b) {
+			System.out.println("only left cow bound within farmer bounds");
+			return d - a;
+		} else if (d >= a && d <= b) {
+			System.out.println("only right cow bound within farmer bounds");
+			return b - c;
+		} else {
+			System.out.println("neither cow bound within farmer bounds");
+			return (b - a) + (d - c);
 		}
-		for (int i = nums.get(2); i <= nums.get(3); i++) {
-			allLinksNoRepeats.add(nums.get(2) + i);
-		}
-		return allLinksNoRepeats.size();
 	}
 	private static ArrayList<Integer> readInputFile(String fileName) {
 		ArrayList<Integer> bounds = new ArrayList<>();
@@ -41,7 +49,7 @@ public class FencePainting {
 	private static void writeOutputFile(int solution) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter("FencePaintingOut.txt"));
-			bw.write(solution);
+			bw.write("" + solution);
 			bw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
